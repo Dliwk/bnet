@@ -3,7 +3,7 @@ from app import app
 from forms import LoginForm, RegisterForm
 from apis.local import account
 from exceptions import LocalApi
-from data.__all_models import *
+from flask_login import login_required, logout_user
 
 
 @app.route('/', methods=['GET'])
@@ -54,3 +54,10 @@ def register():
         else:
             return redirect(url_for('login'))
     return render_template('register.jinja2', title='Регистрация', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
