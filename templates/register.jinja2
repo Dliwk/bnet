@@ -1,0 +1,33 @@
+{% extends "base.jinja2" %}
+{% block content %}
+    <div class="prompt register">
+        <h1>Регистрация</h1>
+        <form action="" method="post" class="register-form">
+            {{ form.hidden_tag() }}
+            {{ form.email.label }}<br/>
+            {{ form.email(class="form-control") }}<br/>
+            {{ form.username.label }}<br/>
+            {{ form.username(class="form-control") }}<br/>
+            {% for error in form.username.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+            {{ form.password.label }}<br/>
+            {{ form.password(class="form-control", type="password") }}<br/>
+            {{ form.password_confirm.label }}<br/>
+            {{ form.password_confirm(class="form-control", type="password") }}<br/>
+            {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+            {% if message %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.jinja2" %}
+{% block content %}
+    <div class="prompt login">
+        <h1>Авторизация</h1>
+        <form action="" method="post" class="login-form">
+            {{ form.hidden_tag() }}
+            {{ form.username.label }}<br/>
+            {{ form.username(class="form-control") }}<br/>
+            {% for error in form.username.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+            {{ form.password.label }}<br/>
+            {{ form.password(class="form-control", type="password") }}<br/>
+            {% for error in form.password.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+            <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        </form>
+    </div>
+{% endblock %}
