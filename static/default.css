@@ -1,0 +1,44 @@
+a.logo {
+    background-color: #5078ff;
+    border-color: #5078ff;
+    color: white;
+}
+
+.prompt {
+    border: solid 50px;
+    margin: 3rem;
+    border-radius: .75rem;
+    max-width: 500px;
+}
+
+.login {
+    background-color: #a5a9ff;
+    border-color: #a5a9ff;
+}
+
+.register {
+    background-color: #ffde5d;
+    border-color: #ffde5d;
+}
+
+.chat {
+    border-radius: .75rem;
+    border: 5px solid #a5a9ff;
+    background-color: #a5a9ff;
+    margin: 1rem;
+}
+
+.chats {
+    margin: 1rem;
+    background-color: #ffde5d;
+    border-radius: .75rem;
+    border: 5px solid #ffde5d;
+}
+
+.section-name {
+    border-top-left-radius: .75rem;
+    border-top-right-radius: .75rem;
+    border-width: 15px;
+    background-color: #ffde5d;
+    border-color: #ffde5d;
+}
