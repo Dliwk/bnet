@@ -23,3 +23,6 @@ class LocalApi:
 
     class InvalidPasswordError(LocalApiError):
         pass
+
+    class NotFoundError(LocalApiError):
+        pass

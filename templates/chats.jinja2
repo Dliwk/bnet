@@ -3,8 +3,8 @@
     <div class="chats">
         <span class="section-name">Чаты</span>
         {% for chat in current_user.chats %}
-            <div class="chat">
-                <span class="title">{{ chat.title }}</span> <br />
+            <div class="chat" onclick="open_chat({{ chat.id }})">
+                <span class="title">{{ chat.title }}</span> <br/>
                 <b>{{ chat.messages[-1].user.username }}</b> {{ chat.messages[-1].text }}
             </div>
         {% endfor %}

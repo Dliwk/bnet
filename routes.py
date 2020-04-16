@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for
 from app import app
 from forms import LoginForm, RegisterForm
 from apis.local import account
+import apis.local as api
 from exceptions import LocalApi
 from flask_login import login_required, logout_user
 
@@ -62,3 +63,13 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/chat/<int:chat_id>')
+def chat(chat_id):
+    selected_chat = None
+    try:
+        selected_chat = api.chats.get_chat(chat_id)
+    except LocalApi.NotFoundError:
+        return render_template('not_found.jinja2')
+    return render_template('chat.jinja2', chat=selected_chat)

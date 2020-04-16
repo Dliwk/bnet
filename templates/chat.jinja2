@@ -1,0 +1,15 @@
+{% extends "base.jinja2" %}
+{% block content %}
+    <div class="chat-menu">
+        <a href="{{ url_for('chats') }}" class="btn btn-secondary">Чаты</a>
+        {% for message in chat.messages %}
+            <div class="message">
+                <div class="message-user-info">
+                    <a class="message-user" href="/{{ message.user.username }}">
+                    {{ message.user.username }}</a>
+                </div>
+                <div class="message-text">{{ message.text }}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

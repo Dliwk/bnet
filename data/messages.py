@@ -13,7 +13,7 @@ class Message(SqlAlchemyBase, SerializerMixin):
                            primary_key=True, autoincrement=True)
     text = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     send_date = sqlalchemy.Column(sqlalchemy.DateTime,
-                                  default=datetime.datetime.now, nullable=False)
+                                  default=datetime.datetime.now, nullable=True)
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime, nullable=True)
 
     chat_id = sqlalchemy.Column(sqlalchemy.Integer,

@@ -28,6 +28,49 @@ a.logo {
     margin: 1rem;
 }
 
+.chat:hover {
+    background-color: #90a0f0;
+    border-color: #90a0f0;
+}
+
+.chat:not(:disabled) {
+    cursor: pointer;
+}
+
+.chat-menu {
+    background-color: #a5a9ff;
+    border: 5px solid #a5a9ff;
+    border-radius: .75rem;
+    margin: 1rem;
+}
+
+.message {
+    display: block;
+    margin: 1rem;
+    border: 5px solid #ffde5d;
+    border-radius: .75rem;
+    background-color: #ffde5d;
+}
+
+.message-user {
+    margin: 0 49px 0 56px;
+    display: inline-block;
+    position: absolute;
+    vertical-align: top;
+}
+
+
+.message-user-avatar {
+
+}
+
+.message-text {
+    display: block;
+    margin: 0 49px 0 56px;
+    /*margin: 0 19px 0 16px;*/
+    padding-top: 21px;
+}
+
 .chats {
     margin: 1rem;
     background-color: #ffde5d;
