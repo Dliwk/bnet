@@ -8,7 +8,8 @@ from flask_login import login_required, logout_user
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.jinja2', title='Главная страница', user={})
+    return redirect(url_for('chats'))
+    # return render_template('index.jinja2', title='Главная страница', user={})
 
 
 @app.route('/login', methods=['GET', 'POST'])
