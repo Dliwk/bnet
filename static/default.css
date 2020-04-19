@@ -42,6 +42,7 @@ a.logo {
     border: 5px solid #a5a9ff;
     border-radius: .75rem;
     margin: 1rem;
+    height: 100%;
 }
 
 .message {
@@ -55,8 +56,14 @@ a.logo {
 .message-user {
     margin: 0 49px 0 56px;
     display: inline-block;
-    position: absolute;
     vertical-align: top;
+}
+
+#messages {
+    min-height: 300px;
+    max-height: 370px;
+    overflow: auto;
+    position: relative;
 }
 
 
@@ -64,11 +71,31 @@ a.logo {
 
 }
 
+
+.msg-send-tools {
+    margin: 1rem;
+}
+
+.msg-input {
+    background-color: #eece4d;
+    border-radius: .75rem;
+    border-width: 30px;
+}
+
+#msg-textbox {
+    word-wrap: break-word;
+    min-height: 31px;
+    max-height: 150px;
+    width: 100%;
+    overflow-x: unset;
+    overflow-y: auto;
+    margin: 1rem;
+    resize: none;
+}
+
 .message-text {
     display: block;
-    margin: 0 49px 0 56px;
-    /*margin: 0 19px 0 16px;*/
-    padding-top: 21px;
+    margin: 0 19px 0 56px;
 }
 
 .chats {

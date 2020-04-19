@@ -5,7 +5,9 @@
       <w>duptype</w>
       <w>jinja</w>
       <w>navbar</w>
+      <w>sendmsg</w>
       <w>tablename</w>
+      <w>userinfo</w>
     </words>
   </dictionary>
 </component>

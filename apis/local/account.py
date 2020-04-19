@@ -1,14 +1,6 @@
 from data import db_session
 from data import User
 from exceptions import LocalApi
-from app import login_manager
-from flask_login import login_user
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    session = db_session.create_session()
-    return session.query(User).get(user_id)
 
 
 def register(username, email, password):
@@ -30,7 +22,7 @@ def register(username, email, password):
     session.commit()
 
 
-def login(password, username=None, email=None, remember=False):
+def get_user_for_login(password, username=None, email=None):
     if not username and not email:
         raise LocalApi.InvalidCall('no email or username passed')
     if username and email:
@@ -48,4 +40,4 @@ def login(password, username=None, email=None, remember=False):
     if not user.check_password(password):
         raise LocalApi.InvalidPasswordError('invalid password')
 
-    login_user(user, remember=remember)
+    return user

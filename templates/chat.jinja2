@@ -2,14 +2,24 @@
 {% block content %}
     <div class="chat-menu">
         <a href="{{ url_for('chats') }}" class="btn btn-secondary">Чаты</a>
-        {% for message in chat.messages %}
-            <div class="message">
-                <div class="message-user-info">
-                    <a class="message-user" href="/{{ message.user.username }}">
-                    {{ message.user.username }}</a>
+        <div id="messages">
+            {% for message in chat.messages %}
+                <div class="message">
+                    <div class="message-user-info">
+                        <a class="message-user" href="/{{ message.user.username }}">
+                            {{ message.user.username }}</a>
+                    </div>
+                    <div class="message-text">{{ message.text }}</div>
                 </div>
-                <div class="message-text">{{ message.text }}</div>
+            {% endfor %}
+        </div>
+        <div class="msg-send-tools">
+            <div class="msg-input">
+                <div id="msg-textbox" role="textbox" contenteditable="true" aria-multiline="true"
+                     aria-placeholder="Напишите сообщение..."></div>
             </div>
-        {% endfor %}
+            <button class="btn btn-primary" onclick="send_message({{ chat.id }})">Отправить</button>
+        </div>
+        <div id="errors"></div>
     </div>
 {% endblock %}
