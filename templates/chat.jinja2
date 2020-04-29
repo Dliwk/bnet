@@ -1,5 +1,7 @@
 {% extends "base.jinja2" %}
 {% block content %}
+    <script src="/static/longpoll.js"></script>
+    <script>longpoll_listener({{ chat.id }})</script>
     <div class="chat-menu">
         <a href="{{ url_for('chats') }}" class="btn btn-secondary">Чаты</a>
         <a href="/invite/{{ chat.id }}" class="btn btn-primary">Пригласить</a>

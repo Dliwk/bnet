@@ -32,21 +32,6 @@ function send_message(chat_id) {
             text: text,
         },
         success: function (data) {
-            let msg = document.createElement("div");
-            msg.className = "message";
-            let userinfo = document.createElement("div");
-            userinfo.className = "message-user-info";
-            let user = document.createElement('a');
-            user.className = "message-user";
-            user.href = '/yourself';
-            user.innerText = 'Вы';
-            let msg_text = document.createElement('div');
-            msg_text.className = "message-text";
-            msg_text.innerText = text;
-            userinfo.append(user);
-            msg.append(userinfo);
-            msg.append(msg_text);
-            $("#messages").append(msg);
             textbox.text('');
         },
         error: function (data) {

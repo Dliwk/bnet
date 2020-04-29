@@ -5,6 +5,16 @@ import apis.local as api
 from exceptions import LocalApi
 from flask_login import login_required, logout_user, current_user, login_user
 import sqlalchemy
+import datetime
+import time
+
+longpoll_waiters = set()
+
+
+class Waiter:
+    def __init__(self, user_id):
+        self.user_id = user_id
+        self.updates = []
 
 
 @app.route('/', methods=['GET'])
@@ -27,8 +37,8 @@ def login():
 @login_required
 def chats():
     return render_template('chats.jinja2', title='Чаты')
-    
-    
+
+
 @app.route('/chats/new', methods=['POST'])
 @login_required
 def new_chat():
@@ -92,8 +102,17 @@ def chat(chat_id):
             return chat(chat_id)  # без этого никак -- я не знаю почему это происходит, и почему только иногда
 
     elif request.method == 'POST':
-        api.chats.send_message(user_id=current_user.id, chat_id=chat_id, text=request.values['text'])
-        return jsonify({'ok': True})
+        try:
+            api.chats.send_message(user_id=current_user.id, chat_id=chat_id, text=request.values['text'])
+        except LocalApi.ForbiddenError:
+            abort(403)
+        except LocalApi.NotFoundError:
+            abort(404)
+        else:
+            notify_longpoll_requests({'type': 'new_message', 'text': request.values['text'],
+                                      'user_id': current_user.id, 'chat_id': chat_id,
+                                      'username': current_user.username})
+            return jsonify({'ok': True})
 
 
 @app.route('/chat/<int:chat_id>/kick/<int:user_id>', methods=['POST'])
@@ -107,6 +126,18 @@ def kick_member(chat_id, user_id):
         abort(404)
     else:
         return jsonify({'ok': True})
+
+
+@app.route('/chat/<int:chat_id>/updates', methods=['GET'])
+@login_required
+def get_chat_updates(chat_id):
+    start_time = datetime.datetime.now()
+    waiter = Waiter(user_id=current_user.id)
+    longpoll_waiters.add(waiter)
+    while datetime.datetime.now().timestamp() - start_time.timestamp() < 25 and not waiter.updates:
+        time.sleep(0.1)
+    longpoll_waiters.remove(waiter)
+    return jsonify({'ok': True, 'values': waiter.updates})
 
 
 @app.route('/join/<string:code>')
@@ -147,3 +178,13 @@ def invite_reset(chat_id):
         abort(404)
     else:
         return render_template('invite_result.jinja2', code=code, chat_id=chat_id)
+
+
+def notify_longpoll_requests(event):
+    for waiter in longpoll_waiters:
+        try:
+            api.chats.check_user_in_chat(event['chat_id'], waiter.user_id)
+        except (LocalApi.ForbiddenError, LocalApi.NotFoundError):
+            pass
+        else:
+            waiter.updates.append(event)
