@@ -5,6 +5,7 @@
       <w>duptype</w>
       <w>gencode</w>
       <w>jinja</w>
+      <w>longpoll</w>
       <w>navbar</w>
       <w>sendmsg</w>
       <w>tablename</w>
