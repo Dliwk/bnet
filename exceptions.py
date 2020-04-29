@@ -29,3 +29,6 @@ class LocalApi:
 
     class NotFoundError(LocalApiError):
         pass
+
+    class InvalidCode(LocalApiError):
+        pass
