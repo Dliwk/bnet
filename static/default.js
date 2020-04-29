@@ -55,6 +55,19 @@ function send_message(chat_id) {
     });
 }
 
+function new_chat(c_title) {
+    $.ajax("/chats/new?title=" + c_title, {
+        accept: "application/json",
+        type: "POST",
+        success: function (data) {
+            open_chat(data.chat_id);
+        },
+        error: function (data) {
+            show_error("Какая-то ошибка, попробуйте позже");
+        },
+    });
+}
+
 $(document).ready(function () {
     $("#msg-textbox").keypress(function (e) {
         if (e.ctrlKey && e.key === "Enter") {

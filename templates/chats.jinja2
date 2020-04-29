@@ -1,12 +1,16 @@
 {% extends "base.jinja2" %}
 {% block content %}
     <div class="chats">
-        <span class="section-name">Чаты</span>
+        <div>
+            <span class="section-name">Чаты</span>
+            <button class="btn btn-primary" onclick="new_chat('безымянный чат')">Новый чат</button>
+        </div>
         {% for chat in current_user.chats %}
             <div class="chat" onclick="open_chat({{ chat.id }})">
                 <span class="title">{{ chat.title }}</span> <br/>
                 <b>{{ chat.messages[-1].user.username }}</b> {{ chat.messages[-1].text }}
             </div>
         {% endfor %}
+        <div id="errors"></div>
     </div>
 {% endblock %}
