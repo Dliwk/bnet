@@ -11,6 +11,9 @@ class LocalApi:
         def __init__(self, *args, duptype):
             super().__init__(*args)
             self.duptype = duptype
+    
+    class ForbiddenError(LocalApiError):
+        pass
 
     class PasswordError(LocalApiError):
         pass

@@ -1,7 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify, abort
 from app import app
 from forms import LoginForm, RegisterForm
-from apis.local import account
 import apis.local as api
 from exceptions import LocalApi
 from flask_login import login_required, logout_user, current_user, login_user
@@ -18,16 +17,24 @@ def index():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = account.get_user_for_login(username=form.username.data, password=form.password.data)
+        user = api.account.get_user_for_login(username=form.username.data, password=form.password.data)
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('index'))
     return render_template('login.jinja2', title='Авторизация', form=form)
 
 
-@app.route('/chats')
+@app.route('/chats/')
 @login_required
 def chats():
     return render_template('chats.jinja2', title='Чаты')
+    
+    
+@app.route('/chats/new', methods=['POST'])
+@login_required
+def new_chat():
+    title = request.args['title']
+    created_chat = api.chats.new_chat(title=title, owner_user_id=current_user.id)
+    return jsonify({'ok': True, 'chat_id': created_chat.id})
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -39,9 +46,9 @@ def register():
                                    form=form,
                                    message="Пароли не совпадают")
         try:
-            account.register(form.username.data,
-                             form.email.data,
-                             form.password.data)
+            api.account.register(form.username.data,
+                                 form.email.data,
+                                 form.password.data)
         except LocalApi.DuplicateError as e:
             if e.duptype == 'email':
                 duptype = 'email'
@@ -74,9 +81,11 @@ def chat(chat_id):
     if request.method == 'GET':
         selected_chat = None
         try:
-            selected_chat = api.chats.get_chat(chat_id)
+            selected_chat = api.chats.get_chat(chat_id, current_user.id)
         except LocalApi.NotFoundError:
             abort(404)
+        except LocalApi.ForbiddenError:
+            abort(403)
         try:
             return render_template('chat.jinja2', chat=selected_chat)
         except sqlalchemy.orm.exc.DetachedInstanceError:
