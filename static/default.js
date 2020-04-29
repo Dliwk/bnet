@@ -68,10 +68,23 @@ function new_chat(c_title) {
     });
 }
 
+function kick_member(chat_id, user_id) {
+    $.ajax("/chat/" + chat_id + "/kick/" + user_id, {
+        accept: "application/json",
+        type: "POST",
+        success: function (data) {
+
+        },
+        error: function (data) {
+            show_error("Какая-то ошибка, попробуйте позже");
+        },
+    });
+}
+
 $(document).ready(function () {
     $("#msg-textbox").keypress(function (e) {
         if (e.ctrlKey && e.key === "Enter") {
             send_message();
         }
-    })
+    });
 });

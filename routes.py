@@ -96,6 +96,19 @@ def chat(chat_id):
         return jsonify({'ok': True})
 
 
+@app.route('/chat/<int:chat_id>/kick/<int:user_id>', methods=['POST'])
+@login_required
+def kick_member(chat_id, user_id):
+    try:
+        api.chats.kick_member(current_user.id, chat_id, user_id)
+    except LocalApi.ForbiddenError:
+        abort(403)
+    except LocalApi.NotFoundError:
+        abort(404)
+    else:
+        return jsonify({'ok': True})
+
+
 @app.route('/join/<string:code>')
 @login_required
 def join_chat(code):

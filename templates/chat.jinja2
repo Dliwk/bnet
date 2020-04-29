@@ -3,6 +3,45 @@
     <div class="chat-menu">
         <a href="{{ url_for('chats') }}" class="btn btn-secondary">Чаты</a>
         <a href="/invite/{{ chat.id }}" class="btn btn-primary">Пригласить</a>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
+            Участники
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% for member in chat.users %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <a href="/user/{{ member.username }}">{{ member.username }}</a>
+                                </div>
+                                {% if current_user in chat.admins %}
+                                    <div class="col-md-3 ml-auto">
+                                        <button class="btn btn-danger"
+                                                onclick="kick_member({{ chat.id }}, {{ member.id }})">
+                                            {% if current_user == member %} Выйти {% else %} Выгнать {% endif %}
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <br/>
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="messages">
             {% for message in chat.messages %}
                 <div class="message">

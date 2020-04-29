@@ -14,6 +14,14 @@ def check_user_in_chat(chat_id, user_id):
         raise LocalApi.ForbiddenError('chat not available for this user')
 
 
+def check_user_is_admin(chat_id, user_id):
+    check_user_in_chat(chat_id, user_id)
+    session = db_session.create_session()
+    chat: Chat = session.query(Chat).get(chat_id)
+    if session.query(User).get(user_id) not in chat.admins:
+        raise LocalApi.ForbiddenError('user is not admin')
+
+
 def get_chat(chat_id, user_id):
     check_user_in_chat(chat_id, user_id)
     session = db_session.create_session()
@@ -41,6 +49,24 @@ def add_user(chat_id, user_id, notify=True):
         send_message(user_id, chat_id, "Присоединился(-ась) по ссылке-приглашению")
 
 
+def add_admin(user_id, chat_id, new_admin_id):
+    if user_id is not None:
+        check_user_is_admin(chat_id, user_id)
+    session = db_session.create_session()
+    chat: Chat = session.query(Chat).get(chat_id)
+    new_admin = session.query(User).get(new_admin_id)
+    chat.admins.append(new_admin)
+    session.commit()
+
+
+def del_admin(user_id, chat_id, admin_id):
+    check_user_is_admin(chat_id, user_id)
+    session = db_session.create_session()
+    chat: Chat = session.query(Chat).get(chat_id)
+    admin = session.query(User).get(admin_id)
+    chat.admins.remove(admin)
+
+
 def new_chat(title, owner_user_id):
     session = db_session.create_session()
     user = session.query(User).get(owner_user_id)
@@ -48,6 +74,7 @@ def new_chat(title, owner_user_id):
     session.add(chat)
     session.commit()
     add_user(chat.id, user.id, notify=False)
+    add_admin(None, chat.id, user.id)
     send_message(user.id, chat.id, 'Чат создан')
     return chat
 
@@ -62,6 +89,15 @@ def check_invitation(user_id, code):
     add_user(chat.id, user.id)
     session.commit()
     return chat.id
+
+
+def kick_member(user_id, chat_id, member_id):
+    check_user_is_admin(chat_id, user_id)
+    session = db_session.create_session()
+    chat = session.query(Chat).get(chat_id)
+    member = session.query(User).get(member_id)
+    chat.users.remove(member)
+    session.commit()
 
 
 def create_invitation(user_id, chat_id):
