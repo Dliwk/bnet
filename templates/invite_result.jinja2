@@ -1,0 +1,11 @@
+{% extends "base.jinja2" %}
+{% block content %}
+    <div class="prompt chat">
+        <h1>Приглашение в чат</h1>
+        <div class="message">
+            <p>Поделитесь этой ссылкой с теми, кого хотите пригласить в чат</p>
+            <a href="/join/{{ code }}" class="btn btn-link">https://b.net/join/{{ code }}</a>
+        </div>
+        <a href="/invite-reset/{{ chat_id }}" class="btn btn-danger">Сбросить ссылку</a>
+    </div>
+{% endblock %}

@@ -94,3 +94,43 @@ def chat(chat_id):
     elif request.method == 'POST':
         api.chats.send_message(user_id=current_user.id, chat_id=chat_id, text=request.values['text'])
         return jsonify({'ok': True})
+
+
+@app.route('/join/<string:code>')
+@login_required
+def join_chat(code):
+    chat_id: int
+    try:
+        chat_id = api.chats.check_invitation(current_user.id, code)
+    except LocalApi.InvalidCode:
+        abort(404)
+    else:
+        return redirect(f'/chat/{chat_id}')
+
+
+@app.route('/invite/<int:chat_id>')
+@login_required
+def invite(chat_id):
+    code: str
+    try:
+        code = api.chats.create_invitation(current_user.id, chat_id)
+    except LocalApi.ForbiddenError:
+        abort(403)
+    except LocalApi.NotFoundError:
+        abort(404)
+    else:
+        return render_template('invite_result.jinja2', code=code, chat_id=chat_id)
+
+
+@app.route('/invite-reset/<int:chat_id>')
+@login_required
+def invite_reset(chat_id):
+    code: str
+    try:
+        code = api.chats.reset_invitation(current_user.id, chat_id)
+    except LocalApi.ForbiddenError:
+        abort(403)
+    except LocalApi.NotFoundError:
+        abort(404)
+    else:
+        return render_template('invite_result.jinja2', code=code, chat_id=chat_id)

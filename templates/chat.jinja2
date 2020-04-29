@@ -2,6 +2,7 @@
 {% block content %}
     <div class="chat-menu">
         <a href="{{ url_for('chats') }}" class="btn btn-secondary">Чаты</a>
+        <a href="/invite/{{ chat.id }}" class="btn btn-primary">Пригласить</a>
         <div id="messages">
             {% for message in chat.messages %}
                 <div class="message">
