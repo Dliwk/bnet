@@ -6,7 +6,7 @@ from sqlalchemy_serializer import SerializerMixin
 
 
 def gencode():
-    return ''.join(chr(random.randint(ord('a'), ord('z'))) for _ in range(40))
+    return ''.join(chr(random.randint(ord('a'), ord('z'))) for _ in range(30))
 
 
 # noinspection PyUnresolvedReferences

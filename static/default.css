@@ -53,10 +53,31 @@ a.logo {
     background-color: #ffde5d;
 }
 
+.message-system {
+    display: inline-block;
+    margin: 1rem;
+    border: 3px solid #696d6b;
+    background-color: #696d6b;
+    border-radius: 1rem;
+}
+
+.message-system-box {
+    text-align: center;
+}
+
 .message-user {
     margin: 0 49px 0 56px;
     display: inline-block;
     vertical-align: top;
+}
+
+.message-user-system {
+    color: white;
+    font-weight: bold;
+}
+
+.message-user-system:hover {
+    color: antiquewhite;
 }
 
 #messages {
@@ -96,6 +117,10 @@ a.logo {
 .message-text {
     display: block;
     margin: 0 19px 0 56px;
+}
+
+.message-text-system {
+    color: white;
 }
 
 .chats {

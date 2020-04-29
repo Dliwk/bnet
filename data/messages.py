@@ -20,6 +20,7 @@ class Message(SqlAlchemyBase, SerializerMixin):
                                 sqlalchemy.ForeignKey("chats.id"), nullable=False)
     user_id = sqlalchemy.Column(sqlalchemy.Integer,
                                 sqlalchemy.ForeignKey("users.id"), nullable=False)
+    is_system = sqlalchemy.Column(sqlalchemy.Boolean, nullable=True, default=False)
     user = orm.relation('User')
     chat = orm.relation('Chat')
 

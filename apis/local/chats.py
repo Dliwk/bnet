@@ -31,10 +31,10 @@ def get_chat(chat_id, user_id):
     return chat
 
 
-def send_message(user_id, chat_id, text):
+def send_message(user_id, chat_id, text, is_system=False):
     check_user_in_chat(chat_id, user_id)
     session = db_session.create_session()
-    message = Message(user_id=user_id, chat_id=chat_id, text=text)
+    message = Message(user_id=user_id, chat_id=chat_id, text=text, is_system=is_system)
     session.add(message)
     session.commit()
 
@@ -46,7 +46,7 @@ def add_user(chat_id, user_id, notify=True):
     chat.users.append(user)
     session.commit()
     if notify:
-        send_message(user_id, chat_id, "Присоединился(-ась) по ссылке-приглашению")
+        send_message(user_id, chat_id, "Присоединился(-ась) по ссылке-приглашению", is_system=True)
 
 
 def add_admin(user_id, chat_id, new_admin_id):
@@ -75,7 +75,7 @@ def new_chat(title, owner_user_id):
     session.commit()
     add_user(chat.id, user.id, notify=False)
     add_admin(None, chat.id, user.id)
-    send_message(user.id, chat.id, 'Чат создан')
+    send_message(user.id, chat.id, 'Чат создан', is_system=True)
     return chat
 
 
