@@ -5,7 +5,7 @@ function longpoll_listener(chat_id) {
         // async: false,
         success: function (data) {
             if (!data.ok) {
-                show_error('Какая-то ошибка, попробуйте позже');
+                // show_error('Какая-то ошибка, попробуйте позже');
                 return;
             }
             for (let i = 0; i < data.values.length; i++) {
@@ -30,7 +30,7 @@ function longpoll_listener(chat_id) {
             }
         },
         error: function (data) {
-            show_error('Какая-то ошибка, попробуйте позже');
+            // show_error('Какая-то ошибка, попробуйте позже');
         },
         complete: function (data) {
             longpoll_listener(chat_id);

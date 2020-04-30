@@ -41,3 +41,32 @@ def get_user_for_login(password, username=None, email=None):
         raise LocalApi.InvalidPasswordError('invalid password')
 
     return user
+
+
+def get_user_public_info(user_id=None, username=None):
+    if username is None and user_id is None:
+        raise LocalApi.InvalidCall('no one from username and user_id set')
+    session = db_session.create_session()
+    user: User
+    if user_id is not None:
+        user = session.query(User).get(user_id)
+    else:
+        user = session.query(User).filter(User.username == username).first()
+    if user is None:
+        raise LocalApi.NotFoundError
+    return User(
+        id=user.id,
+        username=user.username,
+        fullname=user.fullname,
+        about=user.about)
+
+
+def edit_profile(user_id, fullname, about, background_image_url):
+    session = db_session.create_session()
+    user: User = session.query(User).get(user_id)
+    if user is None:
+        raise LocalApi.NotFoundError
+    user.fullname = fullname
+    user.about = about
+    user.background_image_url = background_image_url
+    session.commit()

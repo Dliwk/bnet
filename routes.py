@@ -188,3 +188,24 @@ def notify_longpoll_requests(event):
             pass
         else:
             waiter.updates.append(event)
+
+
+@app.route('/user/<string:username>')
+def profile(username):
+    try:
+        return render_template('profile.jinja2',
+                               user=api.account.get_user_public_info(username=username))
+    except LocalApi.NotFoundError:
+        abort(404)
+
+
+@app.route('/profile/edit', methods=['POST', 'GET'])
+@login_required
+def profile_edit():
+    if request.method == 'GET':
+        return render_template('profile/edit.jinja2', user=current_user)
+    else:
+        api.account.edit_profile(current_user.id,
+                                 fullname=request.values['fullname'], about=request.values['about'],
+                                 background_image_url=request.values['background_image_url'])
+        return redirect(f'/user/{current_user.username}')

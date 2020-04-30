@@ -1,0 +1,23 @@
+{% extends "base.jinja2" %}
+{% block content %}
+    <div class="profile">
+        <div class="profile-info">
+            <div class="profile-username">@{{ user.username }}</div>
+            <div class="profile-fullname">{{ user.fullname }}</div>
+            <p class="profile-about">{{ user.about }}</p>
+            {% if user == current_user %}
+                <a class="btn btn-link" href="/profile/edit">редактировать</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="/static/profile.css"/>
+    <style>
+        body {
+            background-image: url("https://avatars.mds.yandex.net/get-zen_doc/1677529/pub_5ca8f5f762221000b31132db_5caa474c1274fb00af67a7e3/scale_2400");
+            background-repeat: round;
+        {#max-width: 3rem;#}
+        }
+    </style>
+{% endblock %}

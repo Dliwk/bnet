@@ -1,0 +1,37 @@
+.profile {
+    text-align: center;
+}
+
+.profile-info {
+    margin-top: 3rem;
+    background-color: #000a;
+    border-radius: .75rem;
+    max-width: 500px;
+    min-width: 500px;
+    min-height: 500px;
+    display: inline-block;
+    color: white;
+}
+
+.navbar {
+    background-color: #000a;
+}
+
+.profile-username {
+    font-weight: bolder;
+    font-size: large;
+}
+
+.profile-fullname {
+    font-size: medium;
+    max-lines: 1;
+}
+
+.profile-about {
+    font-size: small;
+    max-width: 300px;
+    margin: 0 auto;
+    max-height: 200px;
+    max-lines: 1;
+    line-break: loose;
+}
