@@ -1,0 +1,12 @@
+{% extends "base.jinja2" %}
+{% block content %}
+    <div class="prompt chat">
+        <h1>Изменение названия чата</h1>
+        <form class="message" method="post">
+            <label>Новое название
+                <input name="title" value="">
+            </label>
+            <input type="submit" value="изменить">
+        </form>
+    </div> {# TODO: переписать на ajax #}
+{% endblock %}

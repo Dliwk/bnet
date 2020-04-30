@@ -4,18 +4,24 @@
     <script>longpoll_listener({{ chat.id }})</script>
     <div class="chat-menu">
         <a href="{{ url_for('chats') }}" class="btn btn-secondary">Чаты</a>
-        <a href="/invite/{{ chat.id }}" class="btn btn-primary">Пригласить</a>
+        {% if current_user in chat.admins %}
+            <a href="/invite/{{ chat.id }}" class="btn btn-primary">Пригласить</a>
+        {% endif %}
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
             Участники
         </button>
+        {% if current_user in chat.admins %}
+            <a class="btn btn-default"
+               href="/chat/{{ chat.id }}/title">Изменить название</a>
+        {% endif %}
         <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Участники чата</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -39,7 +45,7 @@
                         {% endfor %}
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                     </div>
                 </div>
             </div>

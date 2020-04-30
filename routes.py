@@ -208,3 +208,24 @@ def profile_edit():
                                  fullname=request.values['fullname'].strip(), about=request.values['about'].strip(),
                                  background_image_url=request.values['background_image_url'].strip())
         return redirect(f'/user/{current_user.username}')
+
+
+@app.route('/chat/<int:chat_id>/title/', methods=['POST', 'GET'])
+@login_required
+def edit_chat_title(chat_id):
+    if request.method == 'GET':
+        try:
+            return render_template('edit_chat_title.jinja2', chat=api.chats.get_chat(chat_id, current_user.id))
+        except LocalApi.NotFoundError:
+            abort(404)
+        except LocalApi.ForbiddenError:
+            abort(403)
+    else:
+        try:
+            api.chats.set_title(current_user.id, chat_id, request.values['title'])
+        except LocalApi.ForbiddenError:
+            abort(403)
+        except LocalApi.NotFoundError:
+            abort(404)
+        else:
+            return redirect(f'/chat/{chat_id}')

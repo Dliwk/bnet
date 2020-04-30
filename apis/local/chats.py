@@ -101,7 +101,7 @@ def kick_member(user_id, chat_id, member_id):
 
 
 def create_invitation(user_id, chat_id):
-    check_user_in_chat(chat_id, user_id)
+    check_user_is_admin(chat_id, user_id)
     session = db_session.create_session()
     invitation = session.query(ChatInvite).get(chat_id)
     if invitation is not None:
@@ -113,7 +113,7 @@ def create_invitation(user_id, chat_id):
 
 
 def reset_invitation(user_id, chat_id):
-    check_user_in_chat(chat_id, user_id)
+    check_user_is_admin(chat_id, user_id)
     session = db_session.create_session()
     invitation: ChatInvite = session.query(ChatInvite).get(chat_id)
     if invitation is None:
@@ -121,3 +121,11 @@ def reset_invitation(user_id, chat_id):
     invitation.code = gencode()
     session.commit()
     return invitation.code
+
+
+def set_title(user_id, chat_id, title):
+    check_user_is_admin(chat_id, user_id)
+    session = db_session.create_session()
+    chat = session.query(Chat).get(chat_id)
+    chat.title = title
+    session.commit()
