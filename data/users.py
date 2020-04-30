@@ -23,6 +23,8 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     fullname = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     about = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
+    background_image_url = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+
     chats = orm.relation('Chat', secondary='chats_to_users', back_populates='users')
 
     def __repr__(self):

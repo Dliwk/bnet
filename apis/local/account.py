@@ -3,20 +3,16 @@ from data import User
 from exceptions import LocalApi
 
 
-def register(username, email, password):
+def register(username, password):
     session = db_session.create_session()
     user = session.query(User).filter(User.username == username).first()
     if user:
         raise LocalApi.DuplicateError(f'User with this username already exists: "{username}"', duptype='username')
-    user = session.query(User).filter(User.email == email).first()
-    if user:
-        raise LocalApi.DuplicateError(f'User with this email already exists: "{email}"', duptype='username')
 
     if len(password) < 5:
         raise LocalApi.PasswordError('This password is too simple')
 
-    user = User(username=username,
-                email=email)
+    user = User(username=username)
     user.set_password(password)
     session.add(user)
     session.commit()
@@ -58,7 +54,8 @@ def get_user_public_info(user_id=None, username=None):
         id=user.id,
         username=user.username,
         fullname=user.fullname,
-        about=user.about)
+        about=user.about,
+        background_image_url=user.background_image_url)
 
 
 def edit_profile(user_id, fullname, about, background_image_url):

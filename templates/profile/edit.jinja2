@@ -5,9 +5,17 @@
             <div class="profile-username" id="profile-username" type="input">@{{ user.username }}</div>
             <div class="profile-fullname" id="profile-fullname" contenteditable="true">{{ user.fullname }}</div>
             <p class="profile-about" id="profile-about" contenteditable="true">{{ user.about }}</p>
+            <p class="profile-background-image-url" id="profile-background-image-url" contenteditable="true">
+                {% if user.background_image_url != None %}
+                    {{ user.background_image_url }}
+                {% else %}
+                    ссылка на фоновое изображение
+                {% endif %}
+            </p>
 
             <input type="hidden" name="fullname" id="input-fullname">
             <input type="hidden" name="about" id="input-about">
+            <input type="hidden" name="background_image_url" id="input-background-image-url">
             <button type="submit" class="btn btn-link" href="/">сохранить</button>
         </div>
     </form>
@@ -16,7 +24,7 @@
     <link rel="stylesheet" href="/static/profile.css"/>
     <style>
         body {
-            background-image: url("https://avatars.mds.yandex.net/get-zen_doc/1677529/pub_5ca8f5f762221000b31132db_5caa474c1274fb00af67a7e3/scale_2400");
+            background-image: url("{{ user.background_image_url }}");
             background-repeat: round;
         }
     </style>

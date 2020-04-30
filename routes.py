@@ -57,7 +57,6 @@ def register():
                                    message="Пароли не совпадают")
         try:
             api.account.register(form.username.data,
-                                 form.email.data,
                                  form.password.data)
         except LocalApi.DuplicateError as e:
             if e.duptype == 'email':
@@ -206,6 +205,6 @@ def profile_edit():
         return render_template('profile/edit.jinja2', user=current_user)
     else:
         api.account.edit_profile(current_user.id,
-                                 fullname=request.values['fullname'], about=request.values['about'],
-                                 background_image_url=request.values['background_image_url'])
+                                 fullname=request.values['fullname'].strip(), about=request.values['about'].strip(),
+                                 background_image_url=request.values['background_image_url'].strip())
         return redirect(f'/user/{current_user.username}')
