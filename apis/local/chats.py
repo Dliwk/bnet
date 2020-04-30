@@ -2,7 +2,7 @@ from data import db_session
 from data import Chat, User, Message, ChatInvite
 from data.chat_invitations import gencode
 from exceptions import LocalApi
-import sqlalchemy.exc
+from longpoll import notify_longpoll_requests
 
 
 def check_user_in_chat(chat_id, user_id):
@@ -36,7 +36,11 @@ def send_message(user_id, chat_id, text, is_system=False):
     session = db_session.create_session()
     message = Message(user_id=user_id, chat_id=chat_id, text=text, is_system=is_system)
     session.add(message)
+    user = session.query(User).get(user_id)
     session.commit()
+    notify_longpoll_requests({'type': 'new_message', 'text': message.text,
+                              'user_id': user_id, 'chat_id': chat_id,
+                              'username': user.username, 'is_system': is_system})
 
 
 def add_user(chat_id, user_id, notify=True):

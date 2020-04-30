@@ -7,14 +7,7 @@ from flask_login import login_required, logout_user, current_user, login_user
 import sqlalchemy
 import datetime
 import time
-
-longpoll_waiters = set()
-
-
-class Waiter:
-    def __init__(self, user_id):
-        self.user_id = user_id
-        self.updates = []
+from longpoll import notify_longpoll_requests, longpoll_waiters, Waiter
 
 
 @app.route('/', methods=['GET'])
@@ -108,9 +101,6 @@ def chat(chat_id):
         except LocalApi.NotFoundError:
             abort(404)
         else:
-            notify_longpoll_requests({'type': 'new_message', 'text': request.values['text'],
-                                      'user_id': current_user.id, 'chat_id': chat_id,
-                                      'username': current_user.username})
             return jsonify({'ok': True})
 
 
@@ -177,16 +167,6 @@ def invite_reset(chat_id):
         abort(404)
     else:
         return render_template('invite_result.jinja2', code=code, chat_id=chat_id)
-
-
-def notify_longpoll_requests(event):
-    for waiter in longpoll_waiters:
-        try:
-            api.chats.check_user_in_chat(event['chat_id'], waiter.user_id)
-        except (LocalApi.ForbiddenError, LocalApi.NotFoundError):
-            pass
-        else:
-            waiter.updates.append(event)
 
 
 @app.route('/user/<string:username>')
